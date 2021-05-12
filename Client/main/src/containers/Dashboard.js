@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 
 import TextField from '@material-ui/core/TextField'
 import io from "socket.io-client";
+import Sidebar from "../components/Sidebar";
 
 const socket = io.connect('http://localhost:4000/')
 
@@ -52,6 +53,10 @@ export default function DashBoard() {
  
       <Navbar></Navbar>
 
+      <div style={{ marginLeft: "90%" }}>
+      <Sidebar></Sidebar>
+      </div>
+
       <div className="card">
 			<form onSubmit={onMessageSubmit}>
 				<h1>Messenger</h1>
@@ -76,19 +81,8 @@ export default function DashBoard() {
 			</div>
 		</div>
 
-import Sidebar from "../components/Sidebar";
 
-export default function DashBoard() {
-  return (
-    <>
-      <div >
-        <Navbar></Navbar>
-      </div>
-      <div style={{ marginLeft: "90%" }}>
-      <Sidebar></Sidebar>
-      </div>
-      
- 
-    </>
-  );
+
+
+
 }
