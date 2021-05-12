@@ -1,28 +1,22 @@
-const { Socket } = require('dgram');
-const express = require('express');
-const app = express();
-const http = require('http');
-const server = http.createServer(app);
-const { Server } = require('socket.io');
-const io = new Server(server);
+const app = require('express')()
+const http = require('http').createServer(app)
+const cors = require('cors')
+const io = require("socket.io")(http, {
+    cors: {
+        origin: '*',
+    }
+  });
 
-app.get('/', (req,res)=>{
-    res.sendFile(__dirname + '/page.html')
-});
-io.on('connection', (Socket) => {
-    console.log('a user connected');
-    Socket.on('disconnect', ()=> {
-        console.log('user disconnected');
+app.use(cors())
+
+io.on('connection', socket => {
+    socket.on('message', ({name, message}) => {
+        io.emit('message', {name, message});
     });
-    Socket.on('chat message', (msg) =>{
-        console.log('massage: ' + msg);
-        io.emit('chat message', msg);
-    })
-    ;
-})
-
-
-
-server.listen(4000, () => {
-    console.log('listening on *:3000');
 });
+
+
+
+http.listen(4000, function() {
+    console.log('listening on pot 4000')
+})
