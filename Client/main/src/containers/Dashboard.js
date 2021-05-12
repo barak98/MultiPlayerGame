@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../components/Navbar";
+
 import TextField from '@material-ui/core/TextField'
 import io from "socket.io-client";
 
@@ -74,6 +75,20 @@ export default function DashBoard() {
 				{renderChat()}
 			</div>
 		</div>
+
+import Sidebar from "../components/Sidebar";
+
+export default function DashBoard() {
+  return (
+    <>
+      <div >
+        <Navbar></Navbar>
+      </div>
+      <div style={{ marginLeft: "90%" }}>
+      <Sidebar></Sidebar>
+      </div>
+      
+ 
     </>
   );
 }
