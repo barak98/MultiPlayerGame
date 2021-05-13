@@ -60,8 +60,9 @@ export default function Navbar() {
                 Logout
               </Link>
               <Link className="nav-item nav-link active" to="/">
-                Home <span className="sr-only">(current)</span>
+                Home <span className="sr-only">(current) </span>
               </Link>
+              <div>Your id is: {currentUser.uid}</div>
             </div>
           </div>
         </nav>
