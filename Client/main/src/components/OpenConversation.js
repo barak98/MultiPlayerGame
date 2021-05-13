@@ -25,7 +25,7 @@ export default function OpenConversation() {
       <div className="d-flex flex-column flex-grow-1">
         <div className="flex-grow-1 overflow-auto">
           <div className="d-flex flex-column align-items-start justify-content-end px-3">
-            {selectedConversation.messages.map((message, index) => {
+          {selectedConversation.messages.map((message, index) => {
               const lastMessage = selectedConversation.messages.length - 1 === index
               return (
                 <div
@@ -44,7 +44,7 @@ export default function OpenConversation() {
               )
             })}
           </div>
-        </div>
+        </div>*/
         <Form onSubmit={handleSubmit}>
           <Form.Group className="m-2">
             <InputGroup>

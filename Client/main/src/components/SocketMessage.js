@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import TextField from "@material-ui/core/TextField";
 import io from "socket.io-client";
 
-const socket = io.connect("http://localhost:4000/");
+const socket = io.connect("http://localhost:8082/");
 
 export default function SocketMessage() {
   const [state, setState] = useState({ message: "", name: "" });
