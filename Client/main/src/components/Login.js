@@ -3,7 +3,7 @@ import { Form, Button, Card, Alert, Container } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-export default function Login( onIdSubmit ) {
+export default function Login( ) {
   const emailRef = useRef();
   const passwordRef = useRef();
   const { login } = useAuth();
@@ -23,7 +23,6 @@ export default function Login( onIdSubmit ) {
     } catch {
       setError("Failed to log in");
     }
-
     setLoading(false);
   }
 
