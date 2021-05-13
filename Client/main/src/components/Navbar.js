@@ -62,7 +62,7 @@ export default function Navbar() {
               <Link className="nav-item nav-link active" to="/">
                 Home <span className="sr-only">(current) </span>
               </Link>
-              <div>Your id is: {currentUser.uid}</div>
+              <div>Your id: {currentUser.uid}</div>
             </div>
           </div>
         </nav>
