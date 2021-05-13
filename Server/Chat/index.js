@@ -13,6 +13,11 @@ io.on('connection', socket => {
     socket.on('message', ({name, message}) => {
         io.emit('message', {name, message});
     });
+
+    socket.on('emitRandom', () => {
+        console.log("in random");
+        io.emit('randomNumber', Math.random()*6)
+    })
 });
 
 
