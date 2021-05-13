@@ -4,7 +4,11 @@ var mysql       = require('mysql');
 const path      = require('path');
 const app       = require('express')();
 const server    = require('http').createServer(app);
-const io        = require('socket.io')(server);
+const io        = require("socket.io")(server, {
+    cors: {
+        origin: '*',
+    }
+  });
 
 app.use(express.static('app'));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules', )));
