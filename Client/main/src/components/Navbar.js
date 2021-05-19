@@ -44,7 +44,7 @@ export default function Navbar() {
               >
                 Logout
               </Link>
-              <Link className="nav-item nav-link active" to="/">
+              <Link className="nav-item nav-link active" to="/dice">
                 Home <span className="sr-only">(current) </span>
               </Link>
             </div>
