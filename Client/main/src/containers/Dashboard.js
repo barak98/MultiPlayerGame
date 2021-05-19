@@ -1,27 +1,22 @@
 import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
-import SocketMessage from "../components/SocketMessage";
-import ContactsProvider from "../components/context/ContactsProvider";
-import ConversationsProvider from "../components/context/ConversationsProvider";
+
+import { useAuth } from "../contexts/AuthContext";
+import { useState } from "react";
 
 export default function DashBoard() {
-  return (
-    <>
-      <ContactsProvider>
-        <ConversationsProvider>
-          <Navbar></Navbar>
-          <div style={{ display: "inline" }}>
-            <div
-              className="d-flex"
-              style={{ height: "90vh", marginLeft: "80%" }}
-            >
-              <Sidebar></Sidebar>
-            </div>
+  const { currentUser } = useAuth();
+  const [id, setId] = useState();
 
-            <SocketMessage></SocketMessage>
+  return (
+     <>
+        <Navbar></Navbar>
+        <Chat></Chat>
+        <div style={{ display: "inline" }}>
+          <div className="d-flex" style={{ height: "90vh" }}>
+           
           </div>
-        </ConversationsProvider>
-      </ContactsProvider>
+        </div>
+
     </>
   );
 }
