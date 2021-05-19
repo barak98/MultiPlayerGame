@@ -14,3 +14,29 @@ io.on('connection', socket => {
     })
   })
 })
+
+//
+const low = require("lowdb");
+const FileSync = require("lowdb/adapters/FileSync");
+
+const adapter = new FileSync("db.json");
+const db = low(adapter);
+
+db.defaults({ users: [] }).write();
+
+
+app.post("/AddUser",(req,res)=>{
+  db.get("users")
+  // .find({id: req.body.id})
+  .assign({
+    password : passwordVal,
+    email : emailVal ,
+    name: nameVal,
+  })
+  .write();
+})
+
+
+app.get("/GetUsers", (req, res) => {
+  res.send(db.get("users").value());
+});
