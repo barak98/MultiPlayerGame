@@ -40,7 +40,7 @@ export default function Login() {
       await login(emailRef.current.value, passwordRef.current.value);
       console.log("add to login");
 
-      history.push("/");
+      history.push("/loginchat");
     } catch {
       setError("Failed to log in");
     }
@@ -65,10 +65,6 @@ export default function Login() {
               <Form.Group id="password">
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" ref={passwordRef} required />
-              </Form.Group>
-              <Form.Group id="name">
-                <Form.Label>Name in chat:</Form.Label>
-                <Form.Control type="name" ref={nameRef} />
               </Form.Group>
 
               <Button disabled={loading} className="w-100" type="submit">

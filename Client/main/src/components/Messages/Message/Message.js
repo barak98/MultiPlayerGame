@@ -35,3 +35,4 @@ const Message = ({ message: { text, user }, name }) => {
 }
 
 export default Message;
+
