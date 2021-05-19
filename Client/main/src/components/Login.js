@@ -40,7 +40,7 @@ export default function Login() {
       await login(emailRef.current.value, passwordRef.current.value);
       console.log("add to login");
 
-      history.push("/loginchat");
+      history.push("/");
     } catch {
       setError("Failed to log in");
     }
@@ -66,6 +66,7 @@ export default function Login() {
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" ref={passwordRef} required />
               </Form.Group>
+
 
               <Button disabled={loading} className="w-100" type="submit">
                 Log In
