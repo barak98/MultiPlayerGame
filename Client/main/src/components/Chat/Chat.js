@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import Messages from "../Messages/Messages";
 import InfoBar from "../InfoBar/InfoBar";
 import Input from "../Input/Input";
+import TextContainer from "../TextContainer/TextContainer";
 
 import "./Chat.css";
 import Navbar from "../Navbar";
@@ -33,7 +34,7 @@ const Chat = ({ location }) => {
     socket.emit("join", { name, room }, (error) => {
       if (error) {
         alert(error);
-        history.push("/loginchat");
+        history.push("/");
       }
     });
   }, [ENDPOINT, location.search]);
@@ -45,6 +46,7 @@ const Chat = ({ location }) => {
 
     socket.on("roomData", ({ users }) => {
       setUsers(users);
+      console.log(users);
     });
   }, []);
 
@@ -59,15 +61,19 @@ const Chat = ({ location }) => {
   return (
     <div className="outerContainer">
       <div className="container">
+     
         <Navbar />
+       
         <InfoBar room={room} />
         <Messages messages={messages} name={name} />
+        <h3>{users.name}</h3>
         <Input
           message={message}
           setMessage={setMessage}
           sendMessage={sendMessage}
         />
       </div>
+      <TextContainer users={users}/>
     </div>
   );
 };

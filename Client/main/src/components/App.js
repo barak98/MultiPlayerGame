@@ -10,6 +10,7 @@ import UpdateProfile from "./UpdateProfile";
 
 import Join from '../components/Join/Join';
 import Chat from '../components/Chat/Chat';
+import Game from "./Game";
 
 
 function App() {
@@ -19,12 +20,13 @@ function App() {
         <Router>
           <AuthProvider>
             <Switch>
-              <PrivateRoute exact path="/" component={Chat} />
+              <Route exact path="/" component={Join} />
               <PrivateRoute path="/upadate-profile" component={UpdateProfile}/>
               <Route path="/signup" component={Signup} />
               <Route path="/login" component={Login} />
-              <Route path="/loginchat" component={Join} />
+              <PrivateRoute path="/chat" component={Chat} />
               <Route path="/forget-password" component= {ForgetPassword}/>
+              <Route path="/game" component={Game}/>
             </Switch>
           </AuthProvider>
         </Router>
