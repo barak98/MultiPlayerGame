@@ -45,6 +45,13 @@ io.on('connect', (socket) => {
 
     callback();
   });
+  socket.on("emitRandom", () => {
+    console.log("in random");
+    var rand1 =Math.floor (Math.random()*(6)+1)
+    var rand2 = Math.floor(Math.random()*(6)+1)
+    
+    io.emit("randomNumber", rand1,rand2)
+  })
 
   socket.on('popup', (name, callback) =>{
     const user = getUser(socket.id);
@@ -65,3 +72,9 @@ io.on('connect', (socket) => {
 });
 
 server.listen(process.env.PORT || 4000, () => console.log(`Server has started.`));
+
+
+
+
+
+/**/
