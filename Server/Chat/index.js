@@ -7,22 +7,12 @@ const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 
 const router = require('./router');
 
-
-io.on('connection', socket => {
-    console.log('connected');
-    socket.on('message', ({name, message}) => {
-        io.emit('message', {name, message});
-    });
-
-  
-
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
     origin: "*",
   },
-
 });
 
 
@@ -52,14 +42,13 @@ io.on('connect', (socket) => {
 
     callback();
   });
-  
-    socket.on("emitRandom", () => {
-        console.log("in random");
-        var rand1 =Math.floor (Math.random()*(6)+1)
-        var rand2 = Math.floor(Math.random()*(6)+1)
-        
-        io.emit("randomNumber", rand1,rand2)
-    })
+  socket.on("emitRandom", () => {
+    console.log("in random");
+    var rand1 =Math.floor (Math.random()*(6)+1)
+    var rand2 = Math.floor(Math.random()*(6)+1)
+    
+    io.emit("randomNumber", rand1,rand2)
+  })
 
   socket.on('disconnect', () => {
     const user = removeUser(socket.id);
