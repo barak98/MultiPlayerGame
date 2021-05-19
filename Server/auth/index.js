@@ -66,6 +66,8 @@ io.on('connection', socket => {
 });
 /* socket function ends */
 
-server.listen(8082, function() {
+
+
+server.listen(4000, function() {
     console.log("server started")
 });
