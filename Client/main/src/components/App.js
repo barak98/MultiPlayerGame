@@ -9,6 +9,7 @@ import PrivateRoute from './PrivateRoute';
 import ForgetPassword from "./ForgetPassword";
 import UpdateProfile from "./UpdateProfile";
 import Dice from "./modals/Dice";
+import game from "./game"
 
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
               <Route path="/signup" component={Signup} />
               <Route path="/login" component={Login} />
               <Route path="/forget-password" component= {ForgetPassword}/>
-              <Route path="/dice" component = {Dice}/>
+              <Route path="/dice" component = {game}/>
             </Switch>
           </AuthProvider>
         </Router>
