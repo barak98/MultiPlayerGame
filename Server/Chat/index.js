@@ -3,7 +3,7 @@ const express = require('express');
 const socketio = require('socket.io');
 const cors = require('cors');
 
-const { addUser, removeUser, getUser, getUsersInRoom, getAllUsers} = require('./users');
+const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 
 const router = require('./router');
 
@@ -14,7 +14,6 @@ const io = socketio(server, {
     origin: "*",
   },
 });
-
 
 app.use(cors());
 app.use(router);
@@ -39,42 +38,26 @@ io.on('connect', (socket) => {
     const user = getUser(socket.id);
 
     io.to(user.room).emit('message', { user: user.name, text: message });
-    io.to(user.room).emir('roomData', {room: user.room ,users: getUsersInRoom(user.room)} );
-
-
 
     callback();
   });
-  socket.on("emitRandom", () => {
-    console.log("in random");
-    var rand1 =Math.floor (Math.random()*(6)+1)
-    var rand2 = Math.floor(Math.random()*(6)+1)
-    
-    io.emit("randomNumber", rand1,rand2)
-  })
 
-  socket.on('popup', (name, callback) =>{
+  socket.on('sendInviteGame', (message, callback) => {
     const user = getUser(socket.id);
 
-    io.to(user.room).emit()
-  } )
-  
+    socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} invite a game!` });
 
+    callback();
+  });
 
   socket.on('disconnect', () => {
     const user = removeUser(socket.id);
 
     if(user) {
-      io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has left.` });
+      io.to(user.room).emit('message', { user: 'admin', text: `${user.name} has left.` });
       io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
     }
   })
 });
 
 server.listen(process.env.PORT || 4000, () => console.log(`Server has started.`));
-
-
-
-
-
-/**/

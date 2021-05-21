@@ -3,13 +3,14 @@ import queryString from "query-string";
 import io from "socket.io-client";
 import { useHistory } from "react-router-dom";
 
+import TextContainer from "../TextContainer/TextContainer";
 import Messages from "../Messages/Messages";
 import InfoBar from "../InfoBar/InfoBar";
 import Input from "../Input/Input";
-import TextContainer from "../TextContainer/TextContainer";
 
 import "./Chat.css";
 import Navbar from "../Navbar";
+import Invite from "../Messages/Invite/Invite";
 
 const ENDPOINT = "localhost:4000";
 
@@ -17,18 +18,20 @@ let socket;
 
 const Chat = ({ location }) => {
   const [name, setName] = useState("");
-  const [room, setRoom] = useState("");
+  const [room] = useState("main");
   const [users, setUsers] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [invite, setInvite] = useState("");
+
   const history = useHistory();
 
+  
   useEffect(() => {
     const { name, room } = queryString.parse(location.search);
 
     socket = io(ENDPOINT);
 
-    setRoom(room);
     setName(name);
 
     socket.emit("join", { name, room }, (error) => {
@@ -46,7 +49,6 @@ const Chat = ({ location }) => {
 
     socket.on("roomData", ({ users }) => {
       setUsers(users);
-      console.log(users);
     });
   }, []);
 
@@ -58,22 +60,28 @@ const Chat = ({ location }) => {
     }
   };
 
+  const sendInviteGame = (event) => {
+    event.preventDefault();
+
+    socket.emit("sendInviteGame", invite, () => setInvite(""));
+  };
+
+  
+
   return (
     <div className="outerContainer">
       <div className="container">
-     
         <Navbar />
-       
         <InfoBar room={room} />
         <Messages messages={messages} name={name} />
-        <h3>{users.name}</h3>
         <Input
           message={message}
           setMessage={setMessage}
           sendMessage={sendMessage}
+          sendInviteGame={sendInviteGame}
         />
       </div>
-      <TextContainer users={users}/>
+      <TextContainer users={users} />
     </div>
   );
 };
