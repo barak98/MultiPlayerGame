@@ -3,7 +3,9 @@ const express = require('express');
 const socketio = require('socket.io');
 const cors = require('cors');
 
+
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
+const { addUserToGameRoom, removeUserFromGameRoom, getUserToGameRoom, getUsersInGameRoom } = require('./gameroom');
 
 const router = require('./router');
 
@@ -42,10 +44,27 @@ io.on('connect', (socket) => {
     callback();
   });
 
-  socket.on('sendInviteGame', (message, callback) => {
-    const user = getUser(socket.id);
+  socket.on('sendInviteGame', ({ name, room }, callback) => {
+     const { error, user } = addUserToGameRoom({ id: socket.id, name, room });
 
-    socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} invite a game!` });
+    if(error) return callback(error);
+    removeUser(user);
+
+    socket.join(user.room);
+
+    callback();
+
+    socket.broadcast.to(user.room).emit('reciveInvite');
+
+  });
+
+    socket.on('accepetInvite', ({ name, room }, callback) => {
+      const { error, user } = addUserToGameRoom({ id: socket.id, name, room });
+
+    if(error) return callback(error);
+    removeUser(user);
+
+    socket.join(user.room);
 
     callback();
   });
@@ -54,7 +73,7 @@ io.on('connect', (socket) => {
     const user = removeUser(socket.id);
 
     if(user) {
-      io.to(user.room).emit('message', { user: 'admin', text: `${user.name} has left.` });
+      io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has left.` });
       io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
     }
   })

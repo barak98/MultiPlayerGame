@@ -1,5 +1,6 @@
 import React from "react";
 
+
 import "./Input.css";
 
 const Input = ({ setMessage, sendMessage, message, sendInviteGame }) => (
