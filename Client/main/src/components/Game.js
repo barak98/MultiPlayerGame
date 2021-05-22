@@ -1,9 +1,12 @@
-import React from 'react'
+import GameBoard from './board/Board';
 
-export default function Game() {
+export default function Game(){
+
     return (
-        <div>
-            <h3>Welcome to game!</h3>
+        <>
+        <div id='game'>
+            <GameBoard/>
         </div>
-    )
+        </>
+    );
 }
