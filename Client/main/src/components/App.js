@@ -8,7 +8,7 @@ import PrivateRoute from './PrivateRoute';
 import ForgetPassword from "./ForgetPassword";
 import UpdateProfile from "./UpdateProfile";
 import Dice from "./modals/Dice";
-import Game from "./game"
+import Game from "./Game"
 
 import Join from '../components/Join/Join';
 import Chat from '../components/Chat/Chat';
