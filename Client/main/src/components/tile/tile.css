@@ -5,15 +5,9 @@
     height: 100px;
     
 }
-
-
 .checker{
     height: 25px;
     width: 25px;
-}
-
-#imageCenter{
-    place-items: center;
 }
 
  #middleTile{
