@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import onlineIcon from "../icons/onlineIcon.png";
 
@@ -14,9 +13,7 @@ const TextContainer = ({ users }) => (
           <h2>
             {users.map(({ name }) => (
               <div key={name} className="activeItem">
-                <Link></Link>
-                <a href="/game">{name}</a>
-
+                {name}
                 <img alt="Online Icon" src={onlineIcon} />
               </div>
             ))}

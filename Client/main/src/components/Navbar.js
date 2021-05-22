@@ -11,7 +11,7 @@ export default function Navbar() {
     setError("");
     try {
       await logout();
-      history.pushState("/login");
+      history.push("/login");
     } catch {
       setError("Failed to log out");
     }
@@ -43,10 +43,6 @@ export default function Navbar() {
                 to="/login"
               >
                 Logout
-              </Link>
-
-              <Link className="nav-item nav-link active" to="/dice">
-                Home <span className="sr-only">(current) </span>
               </Link>
 
             </div>
