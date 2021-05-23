@@ -8,7 +8,7 @@ import PrivateRoute from './PrivateRoute';
 import ForgetPassword from "./ForgetPassword";
 import UpdateProfile from "./UpdateProfile";
 
-import game from "./Game"
+import Game from "./game"
 
 import Join from '../components/Join/Join';
 import Chat from '../components/Chat/Chat';
@@ -27,7 +27,7 @@ function App() {
               <Route path="/login" component={Login} />
               <Route path="/loginchat" component={Join} />
               <Route path="/forget-password" component= {ForgetPassword}/>
-              <Route path="/dice" component = {game}/>
+              <Route path="/game" component = {Game}/>
             </Switch>
           </AuthProvider>
         </Router>
