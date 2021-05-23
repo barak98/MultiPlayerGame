@@ -11,7 +11,7 @@ export default function Navbar() {
     setError("");
     try {
       await logout();
-      history.pushState("/login");
+      history.push("/login");
     } catch {
       setError("Failed to log out");
     }
@@ -21,8 +21,8 @@ export default function Navbar() {
     <>
       {
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <a className="navbar-brand" href="#">
-            Navbar
+          <a className="navbar-brand" href="/">
+            Home
           </a>
           <button
             className="navbar-toggler"
@@ -44,9 +44,11 @@ export default function Navbar() {
               >
                 Logout
               </Link>
+
               <Link className="nav-item nav-link active" to="/game">
                 Home <span className="sr-only">(current) </span>
               </Link>
+
             </div>
           </div>
         </nav>

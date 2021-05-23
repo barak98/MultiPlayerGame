@@ -19,13 +19,12 @@ const ENDPOINT = "localhost:4000";
 
 let socket;
 
-const Chat = ({ location }) => {
+const GameRoom = ({ location }) => {
   const [name, setName] = useState("");
-  const [room, setRoom] = useState("main");
+  const [room, setRoom] = useState("aaa");
   const [users, setUsers] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [openDialog, setOpenDialog] = useState(false);
 
   const history = useHistory();
 
@@ -53,10 +52,7 @@ const Chat = ({ location }) => {
       setUsers(users);
     });
 
-    socket.on("reciveInvite", () => {
-      setOpenDialog(true);
-    });
-  }, [openDialog]);
+  },[]);
 
   const sendMessage = (event) => {
     event.preventDefault();
@@ -66,46 +62,6 @@ const Chat = ({ location }) => {
     }
   };
 
-  const sendInviteGame = (event) => {
-    event.preventDefault();
-    
-    socket.emit("sendInviteGame", { name, room }, (error) => {
-      console.log("accepet");
-
-      setName(name);
-      setRoom("aaaa");
-      console.log(name,room);
-
-      history.push(`/game?name=${name}&room=${room}`)
-
-      if (error) {
-        alert(error);
-        history.push(`/chat?name=${name}&room=${room}`);
-      }
-    });
-  };
-
-  const handleAccepet = (event) => {
-    event.preventDefault();
-    const { name, room } = queryString.parse(location.search);
-
-    socket.emit("accepetInvite", { name, room }, (error) => {
-
-      console.log("accepet");
-
-      setName(name);
-      setRoom("aaaa");
-      console.log(name,room);
-
-      history.push(`/game?name=${name}&room=${room}`)
-
-      if (error) {
-        alert(error);
-        history.push(`/chat?name=${name}&room=${room}`);
-      }
-    });
-
-  };
 
   return (
     <div className="outerContainer">
@@ -117,13 +73,12 @@ const Chat = ({ location }) => {
           message={message}
           setMessage={setMessage}
           sendMessage={sendMessage}
-          sendInviteGame={sendInviteGame}
+          
         />
       </div>
-      <Popup openDialog={openDialog} handleAccepet={handleAccepet} />
       <TextContainer users={users} />
     </div>
   );
 };
 
-export default Chat;
+export default GameRoom;
