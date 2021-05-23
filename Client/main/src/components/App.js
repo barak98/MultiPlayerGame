@@ -13,7 +13,7 @@ import Game from "./Game"
 
 import Join from '../components/Join/Join';
 import Chat from '../components/Chat/Chat';
-import ChatRoom from "./Chat/GameRoom";
+import GameRoom from "./Chat/GameRoom";
 
 
 
@@ -30,7 +30,10 @@ function App() {
               <Route path="/login" component={Login} />
               <PrivateRoute path="/chat" component={Chat} />
               <Route path="/forget-password" component= {ForgetPassword}/>
-              <Route path="/game" component={ChatRoom}/>
+
+              {/* <Route path= "/game" component={Game}/> */}
+              <Route path="/game" component={GameRoom}/>
+
               <Route path="/dice" component = {Game}/>
 
 
