@@ -4,8 +4,7 @@ const socketio = require('socket.io');
 const cors = require('cors');
 
 
-const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
-const { addUserToGameRoom, removeUserFromGameRoom, getUserToGameRoom, getUsersInGameRoom } = require('./gameroom');
+const { addUser, removeUser, getUser, getUsersInRoom, getUserByName, changeRoom } = require('./users');
 
 const router = require('./router');
 
@@ -36,35 +35,58 @@ io.on('connect', (socket) => {
     callback();
   });
 
-  socket.on('sendMessage', (message, callback) => {
-    const user = getUser(socket.id);
+  socket.on('sendMessage', (message,name, callback) => {
+    const user = getUserByName(name);
 
+    console.log(user);
     io.to(user.room).emit('message', { user: user.name, text: message });
+    console.log();
+    
 
     callback();
   });
 
-  socket.on('sendInviteGame', ({ name, room }, callback) => {
-     const { error, user } = addUserToGameRoom({ id: socket.id, name, room });
+  
+  socket.on('sendMessagePrivateRoom', (message,name, callback) => {
+    const user = getUserByName(name);
 
-    if(error) return callback(error);
-    removeUser(user);
-
-    socket.join(user.room);
+    console.log(user);
+    io.to(user.room).emit('messagePrivateRoom', { user: user.name, text: message });
+    console.log();
+    
 
     callback();
+  });
 
-    socket.broadcast.to(user.room).emit('reciveInvite');
+  socket.on('sendInviteGame', ({ name, privateRoom }, callback) => {
+    console.log();
+
+
+    changeRoom(name,privateRoom);
+
+    const  currentUser  = getUserByName( name );
+
+    socket.join(currentUser.room);
+
+    io.to(currentUser.id).emit('goToGameRoom',{ user: currentUser.name, room:currentUser.room});
+
+    socket.broadcast.to("main").emit('reciveInvite',currentUser.room);
 
   });
 
-    socket.on('accepetInvite', ({ name, room }, callback) => {
-      const { error, user } = addUserToGameRoom({ id: socket.id, name, room });
+    socket.on('accepetInvite', ({ name, privateRoom }, callback) => {
 
-    if(error) return callback(error);
-    removeUser(user);
+      changeRoom(name,privateRoom);
 
-    socket.join(user.room);
+      const  currentUser  = getUserByName( name );
+
+    removeUser(currentUser);
+
+    socket.join(currentUser.room);
+
+    io.to(currentUser.id).emit('goToGameRoom',{ user: currentUser.name, room:currentUser.room});
+
+    
 
     callback();
   });

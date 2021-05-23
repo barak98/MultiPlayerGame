@@ -4,6 +4,8 @@ import React from "react";
 import "./Input.css";
 
 const Input = ({ setMessage, sendMessage, message, sendInviteGame }) => (
+
+  
   <form className="form">
     <input
       className="input"
