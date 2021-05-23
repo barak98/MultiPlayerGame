@@ -45,6 +45,10 @@ export default function Navbar() {
                 Logout
               </Link>
 
+              <Link className="nav-item nav-link active" to="/game">
+                Home <span className="sr-only">(current) </span>
+              </Link>
+
             </div>
           </div>
         </nav>
