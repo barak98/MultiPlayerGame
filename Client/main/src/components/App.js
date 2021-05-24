@@ -8,7 +8,7 @@ import PrivateRoute from './PrivateRoute';
 import ForgetPassword from "./ForgetPassword";
 import UpdateProfile from "./UpdateProfile";
 
-import Game from "./TicTacToe"
+import Game from "./ticTac"
 
 
 import Join from '../components/Join/Join';
