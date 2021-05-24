@@ -98,7 +98,7 @@ function Game() {
   }, [paramsRoom]);
 
   return (
-    <div className="container">
+    <div className="containerGame">
       Room: {room}
       <button className="btn" onClick={() => setShare(!share)}>
         Share

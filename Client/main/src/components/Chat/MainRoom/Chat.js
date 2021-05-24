@@ -3,16 +3,17 @@ import queryString from "query-string";
 import io from "socket.io-client";
 import { useHistory } from "react-router-dom";
 
-import TextContainer from "../TextContainer/TextContainer";
-import Messages from "../Messages/Messages";
-import InfoBar from "../InfoBar/InfoBar";
-import Input from "../Input/Input";
-import Popup from "../Popup";
+import TextContainer from "../../TextContainer/TextContainer";
+import Messages from "../../Messages/Messages";
+import InfoBar from "../../InfoBar/InfoBar";
+import Input from "../../Input/Input";
+import Popup from "../../Popup";
+import Navbar from "../../Navbar";
 
 import { v4 as uuidv4 } from 'uuid';
 
 import "./Chat.css";
-import Navbar from "../Navbar";
+
 
 const ENDPOINT = "localhost:4000";
 
@@ -20,7 +21,7 @@ let socket;
 
 const Chat = ({ location }) => {
   const [name, setName] = useState("");
-  const [room, setRoom] = useState("main");
+  const [room] = useState("main");
   const [privateRoom,setPrivateRoom] = useState("");
   const [users, setUsers] = useState("");
   const [message, setMessage] = useState("");
@@ -78,11 +79,7 @@ const Chat = ({ location }) => {
   async function  setPrivteRoomFunction(){
     let roomId = uuidv4();
     test = roomId;
-    return await setPrivateRoom(`room${test}`);
-   }
-
-   async function setOpenDialogFunction(){
-     return await setOpenDialog(false);
+    return await setPrivateRoom(test);
    }
 
   const sendInviteGame = (event,selectedUser) => {
@@ -96,7 +93,7 @@ const Chat = ({ location }) => {
 
       if (error) {
         alert(error);
-        history.push(`/chat?name=${name}&room=${room}`);
+        window.location.reload(false);
       }
     });
   };
@@ -112,12 +109,16 @@ const Chat = ({ location }) => {
 
       if (error) {
         alert(error);
-        history.push(`/chat?name=${name}&room=${room}`);
+        window.location.reload(false);
       }
     });
   };
 
   const handleDecline= (event)=>{
+    event.preventDefault();
+
+
+    
     window.location.reload(false);
   }
 

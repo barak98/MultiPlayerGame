@@ -3,16 +3,13 @@ import queryString from "query-string";
 import io from "socket.io-client";
 import { useHistory } from "react-router-dom";
 
-import TextContainer from "../TextContainer/TextContainer";
-import Messages from "../Messages/Messages";
-import InfoBar from "../InfoBar/InfoBar";
-import Input from "../Input/Input";
-import Popup from "../Popup";
+import Messages from "../../Messages/Messages";
+import InfoBar from "../../InfoBar/InfoBar";
+import Input from "../../Input/Input";
+import Navbar from "../../Navbar";
 
-
-
-import "./Chat.css";
-import Navbar from "../Navbar";
+import "../PrivateRoom/GameRoom.css";
+import Game from "../../Game/game";
 
 const ENDPOINT = "localhost:4000";
 
@@ -28,7 +25,6 @@ const GameRoom = ({ location }) => {
   const history = useHistory();
 
   useEffect(() => {
-      
     const { name, room } = queryString.parse(location.search);
 
     socket = io(ENDPOINT);
@@ -36,40 +32,33 @@ const GameRoom = ({ location }) => {
     setName(name);
     setRoom(room);
 
-    socket.emit("joinPrivateRoom" ,name);
-
-
+    socket.emit("joinPrivateRoom", name);
   }, [ENDPOINT, location.search]);
 
-  useEffect(()=>{
-
+  useEffect(() => {
     socket.on("messagePrivateRoom", (message) => {
-        console.log("messagePrivateRoom");
-        console.log(message);
+      console.log("messagePrivateRoom");
+      console.log(message);
       setMessages((messages) => [...messages, message]);
     });
 
-    
     socket.on("roomData", ({ users }) => {
-        setUsers(users);
-      });
-
-  },[]);
-
-   
+      setUsers(users);
+    });
+  }, []);
 
   const sendMessagePrivateRoom = (event) => {
     event.preventDefault();
     if (message) {
-      socket.emit("sendMessagePrivateRoom", message,name);
+      socket.emit("sendMessagePrivateRoom", message, name);
       setMessage("");
     }
   };
 
-
   return (
-    <div className="outerContainer">
-      <div className="container">
+    <>
+    <div className="outerContainerGameRoom" style={{marginRight: "50%"}}>
+      <div className="containerGameRoom">
         <Navbar />
         <InfoBar room={room} />
         <Messages messages={messages} name={name} />
@@ -79,8 +68,12 @@ const GameRoom = ({ location }) => {
           sendMessage={sendMessagePrivateRoom}
         />
       </div>
-      <TextContainer users={users} />
     </div>
+    <div>
+    <Game />
+    </div>
+   
+    </>
   );
 };
 
