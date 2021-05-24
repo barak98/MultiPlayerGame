@@ -1,11 +1,12 @@
 const usersInRoom = [];
 
 const addUserToGameRoom = ({ id, name, room }) => {
+    
   name = name.trim().toLowerCase();
   room = room.trim().toLowerCase();
 
   if(!name || !room) return { error: 'Username and room are required.' };
-  if(usersInRoom.length == 2) return { error: 'Room is full.' };
+  if(usersInRoom.length == 1) return { error: 'Room is full.' };
 
   const user = { id, name, room };
 

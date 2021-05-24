@@ -5,6 +5,7 @@ const cors = require('cors');
 
 
 const { addUser, removeUser, getUser, getUsersInRoom, getUserByName, changeRoom } = require('./users');
+const { addUserToGameRoom, removeUserFromGameRoom, getUserToGameRoom, getUsersInGameRoom } = require("./gameroom");
 
 const router = require('./router');
 
@@ -61,21 +62,23 @@ io.on('connect', (socket) => {
     io.to(user.room).emit('messagePrivateRoom', { user: user.name, text: message });   
   });
 
-  socket.on('sendInviteGame', ({ name, privateRoom }, callback) => {
+  socket.on('sendInviteGame', ({ name, privateRoom,selectedUser }, callback) => {
     console.log();
 
 
     changeRoom(name,privateRoom);
 
     const  currentUser  = getUserByName( name );
+    const  toUser = getUserByName(selectedUser);
 
-    console.log(currentUser.room);
-    console.log("...........");
+    
+    if(currentUser.id == toUser.id) return callback('you can send invite to your self.');
+
     socket.join(currentUser.room);
 
     io.in(currentUser.id).emit('goToGameRoom',{ user: currentUser.name, room:currentUser.room});
 
-    socket.broadcast.to("main").emit('reciveInvite',currentUser.room);
+    socket.to(toUser.id).emit('reciveInvite',currentUser.room);
 
   });
 
