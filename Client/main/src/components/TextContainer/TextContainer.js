@@ -4,7 +4,7 @@ import onlineIcon from "../icons/onlineIcon.png";
 
 import "./TextContainer.css";
 
-const TextContainer = ({ users }) => (
+const TextContainer = ({ users,sendInviteGame }) => (
   <div className="textContainer">
     {users ? (
       <div>
@@ -12,10 +12,10 @@ const TextContainer = ({ users }) => (
         <div className="activeContainer">
           <h2>
             {users.map(({ name }) => (
-              <div key={name} className="activeItem">
+              <a key={name} className="activeItem" onClick={(e) => sendInviteGame(e,name)}>
                 {name}
                 <img alt="Online Icon" src={onlineIcon} />
-              </div>
+              </a>
             ))}
           </h2>
         </div>

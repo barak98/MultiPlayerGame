@@ -20,9 +20,6 @@ const Input = ({ setMessage, sendMessage, message, sendInviteGame }) => (
     <button className="sendButton" onClick={(e) => sendMessage(e)}>
       Send
     </button>
-    <button className="sendButton" onClick={(e) => sendInviteGame(e)}>
-      Send invite game
-    </button>
   </form>
 );
 

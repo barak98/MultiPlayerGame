@@ -81,18 +81,22 @@ const Chat = ({ location }) => {
     return await setPrivateRoom(`room${test}`);
    }
 
-  const sendInviteGame = (event) => {
+   async function setOpenDialogFunction(){
+     return await setOpenDialog(false);
+   }
+
+  const sendInviteGame = (event,selectedUser) => {
 
     event.preventDefault();
 
     setPrivteRoomFunction();
     console.log(test);
 
-    socket.emit("sendInviteGame", { name, privateRoom:test }, (error) => {
+    socket.emit("sendInviteGame", { name, privateRoom:test,selectedUser }, (error) => {
 
       if (error) {
         alert(error);
-        history.push(`/chat?name=${name}&room=${test}`);
+        history.push(`/chat?name=${name}&room=${room}`);
       }
     });
   };
@@ -113,6 +117,10 @@ const Chat = ({ location }) => {
     });
   };
 
+  const handleDecline= (event)=>{
+    window.location.reload(false);
+  }
+
   return (
     <div className="outerContainer">
       <div className="container">
@@ -123,11 +131,11 @@ const Chat = ({ location }) => {
           message={message}
           setMessage={setMessage}
           sendMessage={sendMessage}
-          sendInviteGame={sendInviteGame}
+          
         />
       </div>
-      <Popup openDialog={openDialog} handleAccepet={handleAccepet} />
-      <TextContainer users={users} />
+      <Popup openDialog={openDialog} handleAccepet={handleAccepet} handleDecline={handleDecline} />
+      <TextContainer users={users} sendInviteGame={sendInviteGame} />
     </div>
   );
 };

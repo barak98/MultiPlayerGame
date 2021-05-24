@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { Link } from "react-router-dom";
 
-export default function AlertDialog({openDialog, handleAccepet}) {
+export default function AlertDialog({openDialog, handleAccepet, handleDecline}) {
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState("");
   const [room,setRoom] = React.useState("");
@@ -36,12 +36,11 @@ export default function AlertDialog({openDialog, handleAccepet}) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={(e) => (handleDecline(e))} color="primary">
             No, i want to stay here.
           </Button>
           <Link
           onClick={(e) => (handleAccepet(e))}
-          to={`/game?name=${name}&room=${room}`}
          color="primary" autoFocus>
             Yes,lets play!
           </Link>
