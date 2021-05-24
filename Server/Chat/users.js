@@ -22,9 +22,17 @@ const removeUser = (id) => {
   if(index !== -1) return users.splice(index, 1)[0];
 }
 
+const changeRoom = (name, room) =>{
+ const user =  getUserByName(name);
+ user.room = room;
+
+}
+
+const getUserByName = (name) => users.find((user) => user.name === name);
+
 const getUser = (id) => users.find((user) => user.id === id);
 
 const getUsersInRoom = (room) => users.filter((user) => user.room === room);
 
-module.exports = { addUser, removeUser, getUser, getUsersInRoom };
+module.exports = { addUser, removeUser, getUser, getUsersInRoom,getUserByName, changeRoom };
 

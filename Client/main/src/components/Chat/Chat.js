@@ -11,7 +11,6 @@ import Popup from "../Popup";
 
 import { v4 as uuidv4 } from 'uuid';
 
-
 import "./Chat.css";
 import Navbar from "../Navbar";
 
@@ -22,12 +21,15 @@ let socket;
 const Chat = ({ location }) => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("main");
+  const [privateRoom,setPrivateRoom] = useState("");
   const [users, setUsers] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
 
   const history = useHistory();
+
+  let test = "";
 
   useEffect(() => {
     const { name, room } = queryString.parse(location.search);
@@ -46,6 +48,7 @@ const Chat = ({ location }) => {
 
   useEffect(() => {
     socket.on("message", (message) => {
+      debugger;
       setMessages((messages) => [...messages, message]);
     });
 
@@ -53,58 +56,61 @@ const Chat = ({ location }) => {
       setUsers(users);
     });
 
-    socket.on("reciveInvite", () => {
+    socket.on("reciveInvite", (room) => {
+      setPrivateRoom(room);
       setOpenDialog(true);
     });
-  }, [openDialog]);
+
+    socket.on("goToGameRoom",({ user,room }) => {
+
+      history.push(`/game?name=${user}&room=${privateRoom}`);
+    }) 
+
+  }, [openDialog,privateRoom]);
 
   const sendMessage = (event) => {
     event.preventDefault();
 
     if (message) {
-      socket.emit("sendMessage", message, () => setMessage(""));
+      socket.emit("sendMessage", message,name, () => setMessage(""));
     }
   };
 
+  async function  setPrivteRoom(){
+    let roomId = uuidv4();
+    test = roomId;
+    return await setPrivateRoom(test);
+   }
+
   const sendInviteGame = (event) => {
     event.preventDefault();
-    
-    socket.emit("sendInviteGame", { name, room }, (error) => {
-      console.log("accepet");
 
-      setName(name);
-      setRoom("aaaa");
-      console.log(name,room);
+    setPrivteRoom();
+    console.log(test);
 
-      history.push(`/game?name=${name}&room=${room}`)
+    socket.emit("sendInviteGame", { name, privateRoom:test }, (error) => {
 
       if (error) {
         alert(error);
-        history.push(`/chat?name=${name}&room=${room}`);
+        history.push(`/chat?name=${name}&room=${test}`);
       }
     });
   };
 
   const handleAccepet = (event) => {
     event.preventDefault();
-    const { name, room } = queryString.parse(location.search);
 
-    socket.emit("accepetInvite", { name, room }, (error) => {
-
+    socket.emit("accepetInvite", { name, privateRoom }, (error) => {
       console.log("accepet");
 
       setName(name);
-      setRoom("aaaa");
-      console.log(name,room);
-
-      history.push(`/game?name=${name}&room=${room}`)
+      console.log(name, privateRoom);
 
       if (error) {
         alert(error);
         history.push(`/chat?name=${name}&room=${room}`);
       }
     });
-
   };
 
   return (

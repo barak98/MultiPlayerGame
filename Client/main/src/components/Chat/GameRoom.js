@@ -9,7 +9,6 @@ import InfoBar from "../InfoBar/InfoBar";
 import Input from "../Input/Input";
 import Popup from "../Popup";
 
-import { v4 as uuidv4 } from 'uuid';
 
 
 import "./Chat.css";
@@ -21,7 +20,7 @@ let socket;
 
 const GameRoom = ({ location }) => {
   const [name, setName] = useState("");
-  const [room, setRoom] = useState("aaa");
+  const [room, setRoom] = useState("");
   const [users, setUsers] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -34,17 +33,14 @@ const GameRoom = ({ location }) => {
     socket = io(ENDPOINT);
 
     setName(name);
+    setRoom(room);
 
-    socket.emit("join", { name, room }, (error) => {
-      if (error) {
-        alert(error);
-        history.push("/");
-      }
-    });
   }, [ENDPOINT, location.search]);
 
   useEffect(() => {
-    socket.on("message", (message) => {
+    socket.on("messagePrivateRoom", (message) => {
+      
+        console.log("messagePrivateRoom");
       setMessages((messages) => [...messages, message]);
     });
 
@@ -52,13 +48,17 @@ const GameRoom = ({ location }) => {
       setUsers(users);
     });
 
-  },[]);
+  }, []);
 
-  const sendMessage = (event) => {
+  const sendMessagePrivateRoom = (event) => {
     event.preventDefault();
 
+
+    debugger;
     if (message) {
-      socket.emit("sendMessage", message, () => setMessage(""));
+        
+      socket.emit("sendMessagePrivateRoom", message,name, () => setMessage(""));
+      console.log(message);
     }
   };
 
@@ -72,8 +72,7 @@ const GameRoom = ({ location }) => {
         <Input
           message={message}
           setMessage={setMessage}
-          sendMessage={sendMessage}
-          
+          sendMessage={sendMessagePrivateRoom}
         />
       </div>
       <TextContainer users={users} />
