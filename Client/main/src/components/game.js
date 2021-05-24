@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import './game.css';
 
-
 import io from 'socket.io-client';
 const socket = io('http://localhost:5000');
-
 
 function Game() {
   const [game, setGame] = useState(Array(9).fill(''));
