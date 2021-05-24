@@ -5,6 +5,7 @@ const cors = require('cors');
 
 
 const { addUser, removeUser, getUser, getUsersInRoom, getUserByName, changeRoom } = require('./users');
+const { addUserToGameRoom, removeUserFromGameRoom, getUserToGameRoom, getUsersInGameRoom } = require("./gameroom");
 
 const router = require('./router');
 
@@ -46,31 +47,38 @@ io.on('connect', (socket) => {
     callback();
   });
 
-  
-  socket.on('sendMessagePrivateRoom', (message,name, callback) => {
+  socket.on('joinPrivateRoom',(name)=>{
+
     const user = getUserByName(name);
+    socket.join(user.room);
 
-    console.log(user);
-    io.to(user.room).emit('messagePrivateRoom', { user: user.name, text: message });
-    console.log();
-    
+    socket.emit('message', { user: 'admin', text: `${user.name}, welcome to room.`});
+    socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
+  })
 
-    callback();
+  
+  socket.on('sendMessagePrivateRoom', (message,name) => {
+    const user = getUserByName(name);
+    io.to(user.room).emit('messagePrivateRoom', { user: user.name, text: message });   
   });
 
-  socket.on('sendInviteGame', ({ name, privateRoom }, callback) => {
+  socket.on('sendInviteGame', ({ name, privateRoom,selectedUser }, callback) => {
     console.log();
 
 
     changeRoom(name,privateRoom);
 
     const  currentUser  = getUserByName( name );
+    const  toUser = getUserByName(selectedUser);
+
+    
+    if(currentUser.id == toUser.id) return callback('you can send invite to your self.');
 
     socket.join(currentUser.room);
 
-    io.to(currentUser.id).emit('goToGameRoom',{ user: currentUser.name, room:currentUser.room});
+    io.in(currentUser.id).emit('goToGameRoom',{ user: currentUser.name, room:currentUser.room});
 
-    socket.broadcast.to("main").emit('reciveInvite',currentUser.room);
+    socket.to(toUser.id).emit('reciveInvite',currentUser.room);
 
   });
 
@@ -80,11 +88,12 @@ io.on('connect', (socket) => {
 
       const  currentUser  = getUserByName( name );
 
-    removeUser(currentUser);
+      console.log("currentUser");
+      console.log(currentUser);
 
     socket.join(currentUser.room);
 
-    io.to(currentUser.id).emit('goToGameRoom',{ user: currentUser.name, room:currentUser.room});
+    io.in(currentUser.id).emit('goToGameRoom',{ user: currentUser.name, room:currentUser.room});
 
     
 
