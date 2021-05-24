@@ -48,7 +48,6 @@ const Chat = ({ location }) => {
 
   useEffect(() => {
     socket.on("message", (message) => {
-      debugger;
       setMessages((messages) => [...messages, message]);
     });
 
@@ -76,16 +75,17 @@ const Chat = ({ location }) => {
     }
   };
 
-  async function  setPrivteRoom(){
+  async function  setPrivteRoomFunction(){
     let roomId = uuidv4();
     test = roomId;
-    return await setPrivateRoom(test);
+    return await setPrivateRoom(`room${test}`);
    }
 
   const sendInviteGame = (event) => {
+
     event.preventDefault();
 
-    setPrivteRoom();
+    setPrivteRoomFunction();
     console.log(test);
 
     socket.emit("sendInviteGame", { name, privateRoom:test }, (error) => {

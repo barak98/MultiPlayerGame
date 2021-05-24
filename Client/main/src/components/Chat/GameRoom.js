@@ -28,6 +28,7 @@ const GameRoom = ({ location }) => {
   const history = useHistory();
 
   useEffect(() => {
+      
     const { name, room } = queryString.parse(location.search);
 
     socket = io(ENDPOINT);
@@ -35,30 +36,33 @@ const GameRoom = ({ location }) => {
     setName(name);
     setRoom(room);
 
+    socket.emit("joinPrivateRoom" ,name);
+
+
   }, [ENDPOINT, location.search]);
 
-  useEffect(() => {
+  useEffect(()=>{
+
     socket.on("messagePrivateRoom", (message) => {
-      
         console.log("messagePrivateRoom");
+        console.log(message);
       setMessages((messages) => [...messages, message]);
     });
 
+    
     socket.on("roomData", ({ users }) => {
-      setUsers(users);
-    });
+        setUsers(users);
+      });
 
-  }, []);
+  },[]);
+
+   
 
   const sendMessagePrivateRoom = (event) => {
     event.preventDefault();
-
-
-    debugger;
     if (message) {
-        
-      socket.emit("sendMessagePrivateRoom", message,name, () => setMessage(""));
-      console.log(message);
+      socket.emit("sendMessagePrivateRoom", message,name);
+      setMessage("");
     }
   };
 
