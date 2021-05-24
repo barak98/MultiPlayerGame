@@ -100,6 +100,31 @@ io.on('connect', (socket) => {
     callback();
   });
 
+  socket.on('reqTurn', (data) => {
+    const room = JSON.parse(data).room
+    console.log('in reqTurn')
+    io.to(room).emit('playerTurn', data)
+})
+
+
+socket.on('joinGame' ,(room , name) => {
+  if(!(dic.isKeyIn(room))){
+      dic.add(room, 1);
+      const  currentUser  = getUserByName( name );
+
+      io.to(currentUser.id).emit("first player settings")
+  }
+  else{
+      if(dic.findAt(room) === 1){
+      dic.AddToValue(room);
+      const  currentUser  = getUserByName( name );
+      io.to(currentUser.id).emit("second player settings")
+      }
+
+      io.to(room).emit('opponent_joined')
+  }
+
+})
   socket.on('disconnect', () => {
     const user = removeUser(socket.id);
 
@@ -108,6 +133,8 @@ io.on('connect', (socket) => {
       io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
     }
   })
+
+
 });
 
 

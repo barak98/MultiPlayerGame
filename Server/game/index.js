@@ -35,6 +35,7 @@ io.on('connection', (socket) => {
         if(!(dic.isKeyIn(room))){
             socket.join(room);
             dic.add(room, 1);
+            io.to(room).emit("first player settings")
         }
         else{
             if(dic.findAt(room) === 1){
