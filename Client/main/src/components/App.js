@@ -8,7 +8,7 @@ import PrivateRoute from './PrivateRoute';
 import ForgetPassword from "./ForgetPassword";
 import UpdateProfile from "./UpdateProfile";
 
-import Game from "./Game"
+import Game from "./TicTacToe"
 
 
 import Join from '../components/Join/Join';
@@ -33,9 +33,8 @@ function App() {
 
               {/* <Route path= "/game" component={Game}/> */}
               <Route path="/game" component={GameRoom}/>
-
-              <Route path="/dice" component = {Game}/>
-
+              <Route path="/tictac" component={Game}/>
+              
 
             </Switch>
           </AuthProvider>

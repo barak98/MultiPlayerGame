@@ -8,6 +8,7 @@ import Messages from "../Messages/Messages";
 import InfoBar from "../InfoBar/InfoBar";
 import Input from "../Input/Input";
 import Popup from "../Popup";
+import TicTacToe from "../TicTacToe"
 
 
 
@@ -64,10 +65,12 @@ const GameRoom = ({ location }) => {
 
 
   return (
+    <>
     <div className="outerContainer">
       <div className="container">
         <Navbar />
         <InfoBar room={room} />
+        <TicTacToe/>
         <Messages messages={messages} name={name} />
         <Input
           message={message}
@@ -77,6 +80,8 @@ const GameRoom = ({ location }) => {
       </div>
       <TextContainer users={users} />
     </div>
+   
+    </>
   );
 };
 
