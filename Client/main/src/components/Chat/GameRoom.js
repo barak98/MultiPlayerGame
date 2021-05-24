@@ -8,6 +8,7 @@ import Messages from "../Messages/Messages";
 import InfoBar from "../InfoBar/InfoBar";
 import Input from "../Input/Input";
 import Popup from "../Popup";
+import Game from "../game"
 
 
 
@@ -72,6 +73,7 @@ const GameRoom = ({ location }) => {
       <div className="container">
         <Navbar />
         <InfoBar room={room} />
+        
         <Messages messages={messages} name={name} />
         <Input
           message={message}

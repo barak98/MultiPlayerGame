@@ -19,6 +19,7 @@ const io = socketio(server, {
 
 app.use(cors());
 app.use(router);
+let dic = new Dictionary()
 
 io.on('connect', (socket) => {
   socket.on('join', ({ name, room }, callback) => {
@@ -141,3 +142,48 @@ socket.on('joinGame' ,(room , name) => {
 
 server.listen(process.env.PORT || 4000, () => console.log(`Server has started.`));
 
+
+function Dictionary(){
+  this.dataStore =[];
+
+
+  this.add = function(key ,value){
+      if(key && value){
+          this.dataStore.push({
+              key: key,
+              value: value
+          })
+          return this.dataStore;
+      }
+  };
+
+  this.removeAt = function(key){
+      for (let i = 0; i<this.dataStore.length;i++){
+          if(this.dataStore[i].key === key)
+              this.dataStore.splice(this.dataStore[i],1)
+      }
+  };
+
+  this.isKeyIn = function(key){
+      for(let i = 0; i<this.dataStore.length;i++){
+          if(this.dataStore[i].key === key)
+          return true;
+      }
+      return false;
+  };
+
+  this.findAt = function(key){
+      for(let i = 0; i<this.dataStore.length;i++){
+          if (this.dataStore[i].key===key){
+              return this.dataStore[i].value
+          }
+      }
+  };
+
+  this.AddToValue = function(key){
+      this.dataStore.forEach(e => {
+          if(e.key === key)
+              e.value = 2;
+      });
+  };
+}
