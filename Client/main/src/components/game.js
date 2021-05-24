@@ -141,7 +141,7 @@ function Game() {
         <Box index={8} turn={turn} value={game[8]} />
       </div>
     </div>
-  );
+    );
 }
 
 const Box = ({ index, turn, value }) => {
