@@ -3,7 +3,7 @@ import { useLocation } from 'react-router';
 import './game.css';
 
 import io from 'socket.io-client';
-const socket = io('http://localhost:5000');
+const socket = io('http://localhost:4000');
 
 function Game() {
   const [game, setGame] = useState(Array(9).fill(''));
@@ -19,11 +19,13 @@ function Game() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const paramsRoom = params.get('room');
+  const name = params.get('name');
   const [room, setRoom] = useState(paramsRoom);
 
 
   const turn = (index) => {
     if (!game[index] && !winner && myTurn && hasOpponent) {
+      debugger;
       socket.emit('reqTurn', JSON.stringify({ index, value: xo, room }));
     }
   };
@@ -52,6 +54,7 @@ function Game() {
   }, [game, turnNumber, xo]);
 
   useEffect(() => {
+    debugger;
     socket.on('playerTurn', (json) => {
       setTurnData(json);
     });
@@ -61,9 +64,20 @@ function Game() {
     });
 
     socket.on('opponent_joined', () => {
+      debugger;
       setHasOpponent(true);
       setShare(false);
     });
+    socket.on("firstPlayerSettings" ,(roomGot) =>{
+      setRoom(roomGot)
+      setMyTurn(true);
+    })
+    socket.on("secondPlayerSettings",(roomGot) =>{
+      setRoom(roomGot)
+      setXO('O');
+      setMyTurn(false);
+    })
+    
   }, []);
 
   useEffect(() => {
@@ -82,34 +96,12 @@ function Game() {
   }, [turnData, game, turnNumber, winner, myTurn]);
 
   useEffect(() => {
-    if (paramsRoom) {
-      // means you are player 2
-      setXO('O');
-      socket.emit('join', paramsRoom);
-      setRoom(paramsRoom);
-      setMyTurn(false);
-    } else {
-      // means you are player 1
-      const newRoomName = random();
-      socket.emit('create', newRoomName);
-      setRoom(newRoomName);
-      setMyTurn(true);
-    }
-  }, [paramsRoom]);
+      socket.emit('joinGame', name);
+  }, []);
 
   return (
     <div className="containerGame">
-      Room: {room}
-      <button className="btn" onClick={() => setShare(!share)}>
-        Share
-      </button>
-      {share ? (
-        <>
-          <br />
-          <br />
-          Share link: <input type="text" value={`${window.location.href}?room=${room}`} readOnly />
-        </>
-      ) : null}
+
       <br />
       <br />
       Turn: {myTurn ? 'You' : 'Opponent'}

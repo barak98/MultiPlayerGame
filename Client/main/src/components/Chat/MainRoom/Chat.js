@@ -66,6 +66,11 @@ const Chat = ({ location }) => {
       history.push(`/game?name=${user}&room=${privateRoom}`);
     }) 
 
+    socket.on("goToMainRoom",({ user,room }) => {
+
+      history.push(`/main?name=${user}&room=${room}`);
+    }) 
+
   }, [openDialog,privateRoom]);
 
   const sendMessage = (event) => {
@@ -87,7 +92,6 @@ const Chat = ({ location }) => {
     event.preventDefault();
 
     setPrivteRoomFunction();
-    console.log(test);
 
     socket.emit("sendInviteGame", { name, privateRoom:test,selectedUser }, (error) => {
 
@@ -116,16 +120,31 @@ const Chat = ({ location }) => {
 
   const handleDecline= (event)=>{
     event.preventDefault();
-
-
-    
     window.location.reload(false);
   }
+
+  const BackToMainFunc = (event)=>{
+    event.preventDefault();
+
+    socket.emit("BackToMain",{name,room},(error)=>{
+
+      console.log("back");
+      if (error) {
+        alert(error);
+        window.location.reload(false);
+      }
+    })
+  }
+
+  const BackToMain=(event)=>{
+  
+  }
+
 
   return (
     <div className="outerContainer">
       <div className="container">
-        <Navbar />
+        <Navbar BackToMainFunc={BackToMainFunc} />
         <InfoBar room={room} />
         <Messages messages={messages} name={name} />
         <Input
