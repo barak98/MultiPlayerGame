@@ -11,7 +11,7 @@ import Navbar from "../../Navbar";
 import "../PrivateRoom/GameRoom.css";
 import Game from "../../Game/game";
 
-const ENDPOINT = "localhost:4000";
+const ENDPOINT = "https://onlinetictactoe.azurewebsites.net/";
 
 let socket;
 

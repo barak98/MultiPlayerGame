@@ -10,19 +10,18 @@ import Input from "../../Input/Input";
 import Popup from "../../Popup";
 import Navbar from "../../Navbar";
 
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 import "./Chat.css";
 
-
-const ENDPOINT = "localhost:4000";
+const ENDPOINT = "https://onlinetictactoe.azurewebsites.net/";
 
 let socket;
 
 const Chat = ({ location }) => {
   const [name, setName] = useState("");
   const [room] = useState("main");
-  const [privateRoom,setPrivateRoom] = useState("");
+  const [privateRoom, setPrivateRoom] = useState("");
   const [users, setUsers] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -61,45 +60,42 @@ const Chat = ({ location }) => {
       setOpenDialog(true);
     });
 
-    socket.on("goToGameRoom",({ user,room }) => {
-
+    socket.on("goToGameRoom", ({ user, room }) => {
       history.push(`/game?name=${user}&room=${privateRoom}`);
-    }) 
+    });
 
-    socket.on("goToMainRoom",({ user,room }) => {
 
-      history.push(`/main?name=${user}&room=${room}`);
-    }) 
-
-  }, [openDialog,privateRoom]);
+  }, [openDialog, privateRoom]);
 
   const sendMessage = (event) => {
     event.preventDefault();
 
     if (message) {
-      socket.emit("sendMessage", message,name, () => setMessage(""));
+      socket.emit("sendMessage", message, name, () => setMessage(""));
     }
   };
 
-  async function  setPrivteRoomFunction(){
+  async function setPrivteRoomFunction() {
     let roomId = uuidv4();
     test = roomId;
     return await setPrivateRoom(test);
-   }
+  }
 
-  const sendInviteGame = (event,selectedUser) => {
-
+  const sendInviteGame = (event, selectedUser) => {
     event.preventDefault();
 
     setPrivteRoomFunction();
 
-    socket.emit("sendInviteGame", { name, privateRoom:test,selectedUser }, (error) => {
-
-      if (error) {
-        alert(error);
-        window.location.reload(false);
+    socket.emit(
+      "sendInviteGame",
+      { name, privateRoom: test, selectedUser },
+      (error) => {
+        if (error) {
+          alert(error);
+          window.location.reload(false);
+        }
       }
-    });
+    );
   };
 
   const handleAccepet = (event) => {
@@ -118,43 +114,28 @@ const Chat = ({ location }) => {
     });
   };
 
-  const handleDecline= (event)=>{
+  const handleDecline = (event) => {
     event.preventDefault();
     window.location.reload(false);
-  }
-
-  const BackToMainFunc = (event)=>{
-    event.preventDefault();
-
-    socket.emit("BackToMain",{name,room},(error)=>{
-
-      console.log("back");
-      if (error) {
-        alert(error);
-        window.location.reload(false);
-      }
-    })
-  }
-
-  const BackToMain=(event)=>{
-  
-  }
-
+  };
 
   return (
     <div className="outerContainer">
       <div className="container">
-        <Navbar BackToMainFunc={BackToMainFunc} />
+        <Navbar name={name} room={room}/>
         <InfoBar room={room} />
         <Messages messages={messages} name={name} />
         <Input
           message={message}
           setMessage={setMessage}
           sendMessage={sendMessage}
-          
         />
       </div>
-      <Popup openDialog={openDialog} handleAccepet={handleAccepet} handleDecline={handleDecline} />
+      <Popup
+        openDialog={openDialog}
+        handleAccepet={handleAccepet}
+        handleDecline={handleDecline}
+      />
       <TextContainer users={users} sendInviteGame={sendInviteGame} />
     </div>
   );

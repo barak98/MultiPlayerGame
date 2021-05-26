@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 
-export default function Navbar({BackToMainFunc}) {
+export default function Navbar() {
   const [error, setError] = useState();
   const { currentUser, logout } = useAuth();
   const history = useHistory();
@@ -21,7 +21,9 @@ export default function Navbar({BackToMainFunc}) {
     <>
       {
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <a className="navbar-brand" >
             MultiGame
+          </a>
           <button
             className="navbar-toggler"
             type="button"
@@ -41,10 +43,6 @@ export default function Navbar({BackToMainFunc}) {
                 to="/login"
               >
                 Logout
-              </Link>
-
-              <Link className="nav-item nav-link active" onClick={(e) => (BackToMainFunc(e))} >
-                Home <span className="sr-only"> </span>
               </Link>
 
             </div>

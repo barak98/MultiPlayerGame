@@ -3,7 +3,7 @@ import { useLocation } from 'react-router';
 import './game.css';
 
 import io from 'socket.io-client';
-const socket = io('http://localhost:4000');
+const socket = io('https://onlinetictactoe.azurewebsites.net/');
 
 function Game() {
   const [game, setGame] = useState(Array(9).fill(''));
